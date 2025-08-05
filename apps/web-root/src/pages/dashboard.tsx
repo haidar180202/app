@@ -1,5 +1,4 @@
 
-
 const styles = `
   .app {
     background-color: #f8f9fa;
