@@ -26,6 +26,7 @@
     "@types/crypto-js": "^4.2.2",
     "@types/node": "^22.13.10",
     "axios": "^1.8.3",
+    "bootstrap": "^5.3.7",
     "casdoor-js-sdk": "^0.15.0",
     "casdoor-react-sdk": "^1.2.0",
     "crypto-js": "^4.2.0",

@@ -40,8 +40,7 @@ export default function Layout({ children }: LayoutProps) {
               <div className="position-relative app-container container-fluid mt-3">
                 {children}
               </div>
-              {/* <Footer /> */}
-              {/* <CiseaFooter/> */}
+
             </main>
           </div>
         ) : (
@@ -57,8 +56,7 @@ export default function Layout({ children }: LayoutProps) {
               <div className="position-relative app-container container-fluid mt-3">
                 {children}
               </div>
-              {/* <Footer /> */}
-              {/* <CiseaFooter/> */}
+
             </main>
           </div>
         )}

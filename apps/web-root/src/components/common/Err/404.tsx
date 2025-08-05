@@ -1,4 +1,4 @@
-import { Button } from "@cisea/cisea-ui";
+
 import image_404 from "@public/media/404.svg";
 
 export default function ErrNotFound() {
@@ -18,9 +18,9 @@ export default function ErrNotFound() {
           Page not found. Please check again!
         </p>
 
-        <Button onClick={() => window.history.back()} className="px-4 py-2">
+        <button onClick={() => window.history.back()} className="px-4 py-2">
           Go Back
-        </Button>
+        </button>
       </div>
     </div>
   );

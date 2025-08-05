@@ -15,18 +15,20 @@ export default function AppRouter() {
         {/* Jika ReRoute juga dihapus, hapus elemen ini */}
         {/* <Route element={<ReRoute />}> */}
 
-          {/* Jika RoutesGuard ingin dihapus, hapus elemen ini dan langsung pasang route di sini */}
-          {/* <Route element={<RoutesGuard />}> */}
-            <Route path="/" element={<Load node={<Dashboard />} />} />
-            <Route path="/home" element={<Load node={<Dashboard />} />} />
+        {/* Jika RoutesGuard ingin dihapus, hapus elemen ini dan langsung pasang route di sini */}
+        {/* <Route element={<RoutesGuard />}> */}
+        <Route path="/" element={<Load node={<Dashboard />} />} />
+        <Route path="/home" element={<Load node={<Dashboard />} />} />
 
 
-            <Route path="module" element={<Load node={<Module1 />} />}>
-              <Route path="*" element={<Load node={<Module1 />} />} />
-            </Route>
+        <Route path="module" element={<Load node={<Module1 />} />}>
+          <Route path="*" element={<Load node={<Module1 />} />} />
+        </Route>
 
-            <Route path="*" element={<Load node={<ErrNotFound />} />} />
-          {/* </Route> */}
+
+
+        <Route path="*" element={<Load node={<ErrNotFound />} />} />
+        {/* </Route> */}
         {/* </Route> */}
       </Routes>
     </BrowserRouter>

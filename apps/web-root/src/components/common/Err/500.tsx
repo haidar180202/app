@@ -1,4 +1,3 @@
-import { Button } from "@cisea/cisea-ui";
 import image_500 from "@public/media/500.svg";
 
 export function ErrInternalserverError() {
@@ -20,9 +19,9 @@ export function ErrInternalserverError() {
           Internal Server Error. Please check again later!
         </p>
 
-        <Button onClick={() => window.history.back()} className="px-4 py-2">
+        <button onClick={() => window.history.back()} className="px-4 py-2">
           Go Back
-        </Button>
+        </button>
       </div>
     </div>
   );
