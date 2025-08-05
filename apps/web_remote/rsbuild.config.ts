@@ -11,7 +11,7 @@ const isProduction = NODE_ENV === "production";
 const protocol = parsed.APP_PROTOCOL_SCHEME || "http";
 const hostname = parsed.APP_HOST || "localhost";
 const projectName = PROJECT_NAME;
-const prefix = parsed.APP_PREFIX || "web";
+const prefix = parsed.APP_PREFIX || "web-dev";
 const remote_prefix = parsed.APP_REMOTE_PREFIX || "remote";
 const port = process.env.APP_PORT;
 

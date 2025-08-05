@@ -11,7 +11,7 @@ const { parsed } = loadEnv({ cwd: "../../" });
 const isProduction = NODE_ENV === "production";
 const protocol = parsed.APP_PROTOCOL_SCHEME || "http";
 const hostname = parsed.APP_HOST || "localhost";
-const prefix = parsed.APP_PREFIX || "web";
+const prefix = parsed.APP_PREFIX || "web-dev";
 const port = process.env.APP_PORT || 3000;
 
 function getAssetPrefix() {
