@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate, Outlet } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router";
 import ErrNotFound from "@components/common/Err/404";
 import { Load } from "./route.load";
 import { lazy } from "react";
