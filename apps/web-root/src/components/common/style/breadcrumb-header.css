@@ -1,0 +1,22 @@
+.breadcrumb-container {
+    left: calc(-1 * 30px);
+    width: calc(100% + 60px);
+    margin-top: -0.75rem;
+    margin-bottom: 0px;
+    height: 50px;
+    background-color: rgba(242, 242, 247, 1);
+}
+
+@media (max-width: 992px) {
+    .breadcrumb-container {
+        left: calc(-1 * 20px);
+        width: calc(100% + 40px);
+      }
+}
+
+@media (max-width: 768px) {
+    .breadcrumb-container {
+        left: calc(-1 * 20px);
+        width: calc(100% + 40px);
+    }
+}

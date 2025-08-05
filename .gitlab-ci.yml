@@ -1,0 +1,214 @@
+# Including files
+# |-- Dockerfile
+# |-- nginx.conf
+# |-- .env.{production|staging|development|testing}
+# |-- apps
+#     |-- example
+#         |-- .env.{production|staging|development|testing}
+
+variables:
+  NODE_ENV: $CI_COMMIT_BRANCH
+  NODE_VERSION: 20.18-alpine3.21
+  NODE_IMAGE: harbor.bukitasam.co.id/public/node:$NODE_VERSION
+  PNPM_VERSION: 9.15.4
+  PNPM_STORE_DIR: .pnpm-store
+  NGINX_VERSION: 1.27.3-alpine3.20
+  NGINX_IMAGE: harbor.bukitasam.co.id/public/nginx:$NGINX_VERSION
+  REGISTRY_HOST: registry.local
+  REGISTRY_NAMESPACE: abcd-namespace
+  REGISTRY_USERNAME: robot$$account
+  REGISTRY_PASSWORD: my-strong-password
+  RANCHER_CLI_VERSION: latest
+  RANCHER_CLI_IMAGE: harbor.bukitasam.co.id/public/rancher-cli:$RANCHER_CLI_VERSION
+  RANCHER_URL: http://rancher.local
+  RANCHER_TOKEN: token-abcd
+  HUSKY: 0
+
+.prepare-pnpm: &prepare-pnpm
+  - corepack enable
+  - corepack prepare pnpm@$PNPM_VERSION --activate
+  - pnpm config set store-dir $PNPM_STORE_DIR
+
+.release-deployment: &release-deployment
+  - echo deploy $NODE_ENV stage
+  - CHANGES=$(echo $CHANGES | sed "s/\[//g" | sed "s/\]//g" | sed "s/\,/ /g")
+  - echo $CHANGES 
+  - rancher login --token $RANCHER_TOKEN --context $K8S_CONTEXT $RANCHER_URL
+  - |
+    for IMAGE in $CHANGES; do
+      rancher kubectl set image deployment/$IMAGE \
+        $IMAGE=$REGISTRY_HOST/$REGISTRY_NAMESPACE/$NODE_ENV/web/$IMAGE:$CI_COMMIT_SHORT_SHA \
+        -n $K8S_NAMESPACE;
+      echo release $IMAGE;
+    done
+
+stages:
+  - sync
+  - build
+  - deploy
+
+default:
+  cache: &global_cache
+    key: $NODE_ENV
+    paths:
+      - $PNPM_STORE_DIR
+      - .turbo
+      - dist
+      - Dockerfile.$NODE_ENV
+      - nginx.conf.$NODE_ENV
+      - node_modules/
+      - .pnpm-store
+      - apps/**/node_modules/
+    policy: pull-push
+
+dont-interrupt-me:
+  stage: sync
+  variables:
+    GIT_STRATEGY: fetch
+  script:
+    - echo "This jobs makes sure this pipeline won't be interrupted! See https://docs.gitlab.com/ee/ci/yaml/#interruptible."
+    - md5sum .gitlab-ci.yml
+  interruptible: false
+  cache: {}
+
+verify-src:
+  stage: sync
+  image: $NODE_IMAGE
+  variables:
+    GIT_STRATEGY: fetch
+  before_script:
+    - *prepare-pnpm
+    - sed -i "s|:_authToken=.*|:_authToken=${CI_JOB_TOKEN}|" .npmrc
+    - pnpm install --prefer-offline
+  script:
+    - echo "verifing src"
+    - pnpm run prepush
+  cache:
+    <<: *global_cache
+
+build-apps:
+  stage: build
+  image: $NODE_IMAGE
+  before_script:
+    - *prepare-pnpm
+  script:
+    - echo build-apps
+    - sed -i "s|:_authToken=.*|:_authToken=${CI_JOB_TOKEN}|" .npmrc
+    - cp .env.$NODE_ENV .env
+    - rm -rf .env.*
+    - |
+      for app in $(ls ./apps); do 
+        cp ./apps/$app/.env.$NODE_ENV ./apps/$app/.env;
+        rm -rf ./apps/$app/.env.*;
+      done
+    - pnpm install --prefer-offline --prod
+    - pnpm run build --dry-run=json | pnpm run app:affected
+    - pnpm run build
+    - cp Dockerfile Dockerfile.$NODE_ENV
+    - cp nginx.conf nginx.conf.$NODE_ENV
+  cache:
+    <<: *global_cache
+  when: manual
+  needs:
+    - dont-interrupt-me
+    - verify-src
+
+build-images:
+  stage: build
+  variables:
+    GIT_STRATEGY: none
+    CHANGES: "[]"
+  script:
+    - echo build-images
+    - echo $REGISTRY_PASSWORD | docker login $REGISTRY_HOST -u $REGISTRY_USERNAME --password-stdin
+    - |
+      for APP in $(ls ./dist); do
+        IMAGE=$(echo $APP | tr 'A-Z' 'a-z' | sed "s/_/-/g");
+        docker build \
+          --build-arg APP_NAME=$IMAGE \
+          --build-arg NGINX_IMAGE=$NGINX_IMAGE \
+          --build-arg NODE_ENV=$NODE_ENV \
+          --build-arg PATH_BUILD=$APP \
+          -f Dockerfile.$NODE_ENV \
+          -t $REGISTRY_HOST/$REGISTRY_NAMESPACE/$NODE_ENV/web/$IMAGE:$CI_COMMIT_SHORT_SHA .;
+        docker push $REGISTRY_HOST/$REGISTRY_NAMESPACE/$NODE_ENV/web/$IMAGE:$CI_COMMIT_SHORT_SHA;
+        if [ "$CHANGES" == "[]" ]; then CHANGES="[$IMAGE]"; else CHANGES=$(echo $CHANGES | sed "s/\]$/,\ $IMAGE\]/"); fi;
+      done
+    - echo CHANGES=$CHANGES >> .env.$CI_COMMIT_SHORT_SHA
+  artifacts:
+    reports:
+      dotenv:
+        - .env.$CI_COMMIT_SHORT_SHA
+  cache:
+    <<: *global_cache
+    policy: pull
+  needs:
+    - build-apps
+
+testing:
+  stage: deploy
+  image: $RANCHER_CLI_IMAGE
+  variables:
+    GIT_STRATEGY: none
+    K8S_CONTEXT: c-m-shzcv8hw:p-cl6fj
+    K8S_NAMESPACE: cisea-web-test
+  script:
+    - *release-deployment
+  cache: {}
+  needs:
+    - build-images
+  dependencies:
+    - build-images
+  rules:
+    - if: $CI_COMMIT_BRANCH == "testing"
+
+development:
+  stage: deploy
+  image: $RANCHER_CLI_IMAGE
+  variables:
+    GIT_STRATEGY: none
+    K8S_CONTEXT: c-m-shzcv8hw:p-9gx9h
+    K8S_NAMESPACE: cisea-web-dev
+  script:
+    - *release-deployment
+  cache: {}
+  needs:
+    - build-images
+  dependencies:
+    - build-images
+  rules:
+    - if: $CI_COMMIT_BRANCH == "development"
+
+staging:
+  stage: deploy
+  image: $RANCHER_CLI_IMAGE
+  variables:
+    GIT_STRATEGY: none
+    K8S_CONTEXT: c-m-shzcv8hw:p-8fpmr
+    K8S_NAMESPACE: cisea-web-stg
+  script:
+    - *release-deployment
+  cache: {}
+  needs:
+    - build-images
+  dependencies:
+    - build-images
+  rules:
+    - if: $CI_COMMIT_BRANCH == "staging"
+
+production:
+  stage: deploy
+  image: $RANCHER_CLI_IMAGE
+  variables:
+    GIT_STRATEGY: none
+    K8S_CONTEXT: c-m-shzcv8hw:p-qcds9
+    K8S_NAMESPACE: cisea-web
+  script:
+    - *release-deployment
+  cache: {}
+  needs:
+    - build-images
+  dependencies:
+    - build-images
+  rules:
+    - if: $CI_COMMIT_BRANCH == "production"

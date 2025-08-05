@@ -1,0 +1,133 @@
+.header {
+  background-color: #98c0eb;
+  z-index: 1001;
+}
+
+/* Bulatan tombol dengan ikon */
+.circle-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.circle-btn:hover,
+.circle-btn:focus {
+  background-color: #d1e2ff;
+  outline: none;
+}
+
+.logo-link {
+  font-size: 1.5rem;
+  font-weight: 700;
+  user-select: none;
+  color: #222;
+  text-decoration: none;
+  outline-offset: 2px;
+}
+
+.logo-link:hover,
+.logo-link:focus {
+  text-decoration: underline;
+}
+
+.search-container {
+  position: relative;
+}
+
+.search-input {
+  height: 38px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+  padding-left: 1.5rem !important;
+  padding-right: 2.5rem !important;
+}
+
+.search-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  pointer-events: none;
+}
+
+/* Notification badge */
+.notification-badge {
+  position: absolute;
+  top: 0;
+  start: 100%;
+  transform: translate(-50%, -50%);
+  font-size: 0.65rem;
+  background-color: #dc3545;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 9999px;
+  font-weight: 700;
+}
+
+/* Profile button */
+.profile-btn {
+  padding: 0.3rem 0.8rem;
+}
+
+/* Mobile slide menu */
+.mobile-menu {
+  position: fixed;
+  top: 56px; /* Height header */
+  left: 0;
+  width: 250px;
+  height: calc(100% - 56px);
+  background-color: white;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  transform: translateX(-260px);
+  transition: transform 0.3s ease;
+  z-index: 1050;
+  overflow-y: auto;
+}
+
+.mobile-menu.open {
+  transform: translateX(0);
+}
+
+.mobile-menu-item {
+  font-size: 1rem;
+  color: #222;
+  padding: 12px 16px;
+  text-decoration: none;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  background-color: transparent;
+  text-align: left;
+  outline-offset: 2px;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-menu-item:hover,
+.mobile-menu-item:focus {
+  background-color: #e3f2fd;
+  outline: none;
+}
+
+.btn-logout {
+  border: none;
+  background-color: transparent;
+  font-weight: 700;
+  color: #dc3545;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  padding-left: 16px;
+}
+
+.btn-logout:hover,
+.btn-logout:focus {
+  background-color: #f8d7da;
+  outline: none;
+}

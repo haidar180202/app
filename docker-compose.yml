@@ -1,0 +1,152 @@
+name: cisea-app
+
+networks:
+  app-network:
+    driver: bridge
+
+services:
+  shell:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+  web_remote:
+    build:
+      context: ./apps/web_remote
+      dockerfile: Dockerfile
+    hostname: web_remote
+    networks:
+      - app-network
+    
+  foo:
+    build:
+      context: ./apps/foo
+      dockerfile: Dockerfile
+    ports:
+      - "3003:80"
+    hostname: foo
+    networks:
+      - app-network
+    
+  bar:
+    build:
+      context: ./apps/bar
+      dockerfile: Dockerfile
+    ports:
+      - "3004:80"
+    hostname: bar
+    networks:
+      - app-network
+    
+  testing:
+    build:
+      context: ./apps/testing
+      dockerfile: Dockerfile
+    ports:
+      - "3004:80"
+    hostname: testing
+    networks:
+      - app-network
+
+  news:
+    build:
+      context: ./apps/news
+      dockerfile: Dockerfile
+    ports:
+      - "3010:80"
+    hostname: news
+    networks:
+      - app-network
+    
+  event:
+    build:
+      context: ./apps/event
+      dockerfile: Dockerfile
+    ports:
+      - "3020:80"
+    hostname: event
+    networks:
+      - app-network
+    
+  colleague:
+    build:
+      context: ./apps/colleague
+      dockerfile: Dockerfile
+    ports:
+      - "3030:80"
+    hostname: colleague
+
+  spt:
+    build:
+      context: ./apps/spt
+      dockerfile: Dockerfile
+    ports:
+      - "3100:80"
+    hostname: spt
+    networks:
+      - app-network
+    
+  master:
+    build:
+      context: ./apps/master
+      dockerfile: Dockerfile
+    ports:
+      - "3200:80"
+    hostname: master
+    networks:
+      - app-network
+    
+  payslip:
+    build:
+      context: ./apps/payslip
+      dockerfile: Dockerfile
+    ports:
+      - "3400:80"
+    hostname: payslip
+    networks:
+      - app-network
+    
+  announcement:
+    build:
+      context: ./apps/announcement
+      dockerfile: Dockerfile
+    ports:
+      - "3040:80"
+    hostname: announcement
+    networks:
+      - app-network
+    
+  adminevent:
+    build:
+      context: ./apps/admin_event
+      dockerfile: Dockerfile
+    ports:
+      - "3021:80"
+    hostname: admin_event
+    networks:
+      - app-network
+    
+  about_me:
+    build:
+      context: ./apps/about_me
+      dockerfile: Dockerfile
+    ports:
+      - "3025:80"
+    hostname: about_me
+    networks:
+      - app-network
+    
+  attendance:
+    build:
+      context: ./apps/attendance
+      dockerfile: Dockerfile
+    ports:
+      - "3050:80"
+    hostname: attendance
+    networks:
+      - app-network
+    

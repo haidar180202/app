@@ -1,0 +1,10 @@
+.hover-component {
+    padding: 1rem;
+}
+
+.hover-component:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.35s ease;
+}

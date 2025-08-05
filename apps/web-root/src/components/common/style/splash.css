@@ -1,0 +1,93 @@
+.splash-screen-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background: lightgray 50% / cover no-repeat;
+  background-blend-mode: overlay;
+  z-index: 9999;
+}
+
+.top-logos {
+  z-index: 2;
+  padding: 20px;
+  position: relative;
+}
+
+.pt-logo {
+  height: 2.5rem;
+}
+
+.pt-logo-danantara {
+  height: 3rem;
+}
+
+.content-loading-wrapper {
+  position: absolute;
+  inset: 0;                     
+  display: flex;
+  flex-direction: column;
+  justify-content: center;      
+  align-items: center;          
+  padding: 0 1rem;
+  z-index: 2;
+}
+
+.overlay-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(0, 69, 143, 0.788) 20.65%, #003D80 100%);
+}
+
+.cisea-logo-loading {
+  max-height: 50px;
+  margin-bottom: 1.5rem;
+}
+
+.progress-bar {
+  width: 100%;
+  max-width: 250px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.progress-inner {
+  width: 0%;                    /* awali dari 0 */
+  height: 100%;
+  background: #fff;
+  animation: fill 1.5s ease-out forwards;
+}
+
+@keyframes fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+p.copyright {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  z-index: 2;
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .pt-logo {
+    height: 1.8rem;
+  }
+
+  .pt-logo-danantara {
+    height: 2.3rem;
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "name": "app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "dev:apps": "node ./scripts/dev.js",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "ls:affected": "TURBO_SCM_BASE=turbo turbo ls --affected",
+    "build:affected": "TURBO_SCM_BASE=turbo turbo ls --affected",
+    "remote:create": "node ./utils/codegen/gen_remote",
+    "remote:remove": "node ./utils/codegen/del_remote",
+    "app:affected": "node ./utils/turbo_json_parser/main",
+    "prepare": "node .husky/install.mjs",
+    "prepush": "node ./scripts/pre-push.js",
+    "npmrc": "node ./scripts/npmrc"
+  },
+  "dependencies": {
+    "jwt-decode": "^4.0.0",
+    "turbo": "^2.5.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "koa": "^2.16.1"
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@commitlint/format": "^19.8.0",
+    "@commitlint/types": "^19.8.0",
+    "conventional-changelog-atom": "^5.0.0",
+    "eslint": "^9.25.1",
+    "globals": "^15.15.0",
+    "husky": "^9.1.7",
+    "prettier": "^3.5.3"
+  },
+  "packageManager": "pnpm@8.15.6"
+}
