@@ -16,6 +16,7 @@ apps_changes.json
 
 .env.*.local
 .npmrc
+.gitlab-ci.yml
 pnpm-lock.yaml
 
 

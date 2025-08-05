@@ -1,6 +1,6 @@
-# CISEA FACELIFT
+# MyApp
 
-CISA FACELIFT lorem ipsum
+MyApp lorem ipsum
 
 ## Installation
 
@@ -71,8 +71,6 @@ use .env.development.local for local development or .env.production.local for lo
 
 - React
 - React-router-dom
-- @cisea/ui
-- sentry
 - Turborepo
 - redux
 - @tanstack/react-query
