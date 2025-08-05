@@ -34,6 +34,26 @@ to adding new remote app, run this on your terminal
 
 this will create new folder on `./apps`, then run `pnpm i` to install package if did not installed yet.
 
+then after this please setup your module route like this in <bold>web-root/src/routes/route.tsx </bold>
+
+```bash
+<Route path="module" element={<Load node={<Module1 />} />}>
+    <Route path="*" element={<Load node={<Module1 />} />} />
+</Route>
+```
+
+then after this add .env.development.local and give value like your module 
+
+```bash
+APP_PROJECT_NAME="your module name" #change on prompt
+APP_PORT=3001 #change accordingly
+
+PUBLIC_PATH_MODULE="your module name"
+
+PUBLIC_API_URL=""
+PUBLIC_AUTH_API_URL=""
+```
+
 ## removing remote app
 
 to remove remote app, run this on your terminal

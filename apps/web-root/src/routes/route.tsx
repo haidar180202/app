@@ -26,7 +26,6 @@ export default function AppRouter() {
         </Route>
 
 
-
         <Route path="*" element={<Load node={<ErrNotFound />} />} />
         {/* </Route> */}
         {/* </Route> */}

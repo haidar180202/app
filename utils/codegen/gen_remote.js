@@ -207,49 +207,6 @@ PUBLIC_AUTH_API_URL=""
     `
   await fs.writeFile(join(rootDir, "docker-compose.yml"), composeFile + composeWrite)
 
-  // const nginxFile = await fs.readFile(join(rootDir, "nginx.conf"), "utf-8")
-  // const nginxWrite = `
-  //   location /remote/${slugify(projectName)} {
-  //     proxy_pass http://${slugify(projectName)}/;
-  //     proxy_set_header Host $host;
-  //     proxy_set_header X-Real-IP $remote_addr;
-  //     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  //   }
-  // `
-
-  // const configLines = nginxFile.split('\n');
-
-  // Find the server block
-  // let serverBlockStart = -1;
-  // let serverBlockEnd = -1;
-  // let locationBlockDepth = 0;
-
-  // for (let i = 0; i < configLines.length; i++) {
-  //   if (configLines[i].trim().startsWith('server {')) {
-  //     serverBlockStart = i;
-  //   } else if (configLines[i].trim().startsWith('location')) {
-  //     locationBlockDepth++;
-  //   } else if (configLines[i].trim().startsWith('}')) {
-  //     if (locationBlockDepth > 0) {
-  //       locationBlockDepth--;
-  //     } else if (serverBlockStart !== -1 && serverBlockEnd === -1) {
-  //       serverBlockEnd = i;
-  //     }
-  //   }
-  // }
-
-  // if (serverBlockStart === -1 || serverBlockEnd === -1) {
-  //   console.error('Server block not found in Nginx configuration.');
-  //   return;
-  // }
-
-  // const configNewLocation = nginxWrite.split("\n")
-  // const updatedConfigLines = configLines.slice(0, serverBlockEnd).concat(configNewLocation).concat(configLines.slice(serverBlockEnd + 1))
-  // const updatedConfig = updatedConfigLines.join("\n") + "}"
-
-  // await fs.writeFile(join(rootDir, "nginx.conf"), updatedConfig)
-
-
   console.log(asciiArts[Math.floor(Math.random() * asciiArts.length)]);
   console.log(`✅ Project "${projectName}" generated successfully!`);
   console.log(`👉 cd ${targetDir} && pnpm install`);
